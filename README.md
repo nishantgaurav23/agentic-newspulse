@@ -60,74 +60,6 @@ NewsPulse AI is an **intelligent news analyst** that automatically finds, verifi
 └─────────────┘    └─────────────┘
 ```
 
-### 📊 Self-Correction Loop
-```
-     ┌──────────────┐
-     │ Writer Agent │
-     │  Drafts      │
-     │  Report      │
-     └──────┬───────┘
-            │
-            ▼
-  ┌────────────────────┐
-  │ Verification Agent │     ✗ Issues Found
-  │   Audits Quality   │────────────┐
-  └────────┬───────────┘            │
-           │ ✓ Approved             │
-           │                        │
-           ▼                        ▼
-    ┌──────────┐            ┌──────────────┐
-    │ Deliver  │            │   Retry      │
-    │  Report  │            │ (Max 2-3×)   │
-    └──────────┘            └──────┬───────┘
-                                   │
-                                   └──────┐
-                                          │
-                          Better Draft ───┘
-```
-
----
-
-## 📸 Example Report
-
-### Executive Summary
-```
-The evolving landscape of Artificial Intelligence and Data Science
-continues to drive demand for highly skilled professionals and robust
-strategic frameworks. Recent developments highlight:
-
-• Educational institutions offering advanced programs
-• Industry methodologies for AI project validation
-• Growing emphasis on responsible AI implementation
-```
-
-### Sample Article
-```
-┌──────────────────────────────────────────────────────────┐
-│ 🔴 HIGH PRIORITY                                         │
-│                                                          │
-│ MIT IDSS Program Addresses Practical and Responsible    │
-│ AI Skills for Business Impact                           │
-│                                                          │
-│ Why this matters: Critical professional development     │
-│ opportunities in responsible AI directly aligning with   │
-│ your role as a Data Scientist.                          │
-│                                                          │
-│ Key Insights:                                           │
-│ • Investigate programs offering practical AI skills     │
-│ • Prioritize learning with official certifications      │
-│ • Focus on ethical AI implementation                    │
-│ • Explore Generative AI masterclasses                   │
-│                                                          │
-│ Sources (4 citations):                                  │
-│ [1] "The 12-week program covers deep learning..."       │
-│     - MIT IDSS Curriculum Guide                         │
-│                                                          │
-│ [2] "Participants receive an MIT IDSS Certificate..."   │
-│     - Great Learning                                    │
-└──────────────────────────────────────────────────────────┘
-```
-
 ---
 
 ## 🚀 Quick Start
@@ -147,23 +79,50 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Configure API Keys
+### 2. Get API Keys
+
+#### **Step 2a: Google Gemini API Key**
+
+1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Click "Get API key" → "Create API key in new project"
+3. Copy the API key (starts with `AIza...`)
+
+#### **Step 2b: Google Custom Search API**
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Enable "Custom Search API" in APIs & Services → Library
+3. Create credentials → API Key
+4. Visit [Programmable Search Engine](https://programmablesearchengine.google.com/)
+5. Create a new search engine → Select "Search the entire web"
+6. Copy the Search Engine ID
+
+#### **Step 2c: Gmail App Password**
+
+1. Go to [Google Account Security](https://myaccount.google.com/security)
+2. Enable **2-Step Verification**
+3. Go to **App passwords**
+4. Select Mail → Other (Custom name) → "NewsPulse AI"
+5. Copy the 16-character password
+
+See [EMAIL_SETUP_GUIDE.md](EMAIL_SETUP_GUIDE.md) for detailed email configuration.
+
+### 3. Configure Environment
 
 Create a `.env` file:
 
 ```env
 # Google Gemini API
-GOOGLE_API_KEY=your_google_api_key
+GOOGLE_API_KEY=your_google_api_key_here
 
 # Google Custom Search API
-GOOGLE_SEARCH_API_KEY=your_search_api_key
-GOOGLE_SEARCH_ENGINE_ID=your_search_engine_id
+GOOGLE_SEARCH_API_KEY=your_search_api_key_here
+GOOGLE_SEARCH_ENGINE_ID=your_search_engine_id_here
 
-# Email Configuration
+# Email Configuration (Gmail)
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USERNAME=your-email@gmail.com
-SMTP_PASSWORD=your_app_password
+SMTP_PASSWORD=your_16_char_app_password_here
 
 # Application Settings
 MAX_ARTICLES_PER_REPORT=5
@@ -171,14 +130,9 @@ VERIFICATION_MAX_RETRIES=2
 GEMINI_MODEL=models/gemini-2.5-flash
 ```
 
-**Get API Keys:**
-- [Google AI Studio](https://aistudio.google.com/) - Get GOOGLE_API_KEY
-- [Google Custom Search](https://developers.google.com/custom-search) - Get Search API
-- [Gmail App Password](https://myaccount.google.com/apppasswords) - Get SMTP password
+**Security Note:** Never commit your `.env` file to version control!
 
-See [EMAIL_SETUP_GUIDE.md](EMAIL_SETUP_GUIDE.md) for detailed email configuration.
-
-### 3. Create Your Profile
+### 4. Create Your Profile
 
 ```bash
 # Interactive profile creation
@@ -188,7 +142,7 @@ python create_profile_interactive.py
 python create_my_profile.py
 ```
 
-### 4. Generate Your First Report
+### 5. Generate Your First Report
 
 ```bash
 # Test without email delivery
@@ -200,14 +154,120 @@ python main.py generate your_user_id
 
 ---
 
+## ☁️ Deploy to Google Cloud Platform
+
+### Prerequisites
+
+- Google account
+- Credit/debit card for GCP billing (free tier available)
+- Time required: ~60 minutes
+- Cost: ~$1-2/month for daily reports
+
+### Quick Deploy
+
+See [GCP_INSTALLATION_GUIDE.md](GCP_INSTALLATION_GUIDE.md) for installing Google Cloud SDK.
+
+```bash
+# 1. Set up environment
+export CLOUDSDK_CONFIG=$HOME/gcloud-config
+export PATH=$HOME/google-cloud-sdk/google-cloud-sdk/bin:$PATH
+
+# 2. Authenticate
+gcloud auth login
+gcloud auth application-default login
+
+# 3. Create project
+export PROJECT_ID=newspulse-$(date +%s)
+gcloud projects create $PROJECT_ID
+gcloud config set project $PROJECT_ID
+
+# 4. Enable billing (manual step in browser)
+echo "Enable billing at: https://console.cloud.google.com/billing/linkedaccount?project=$PROJECT_ID"
+
+# 5. Run deployment script
+chmod +x deploy_gcp.sh
+./deploy_gcp.sh
+```
+
+The deployment script will:
+- Enable required APIs
+- Create Artifact Registry repository
+- Build and push Docker image
+- Create Secret Manager secrets
+- Deploy Cloud Run Job
+- Set up Cloud Scheduler for daily execution
+
+### Manual Deployment Steps
+
+If you prefer manual deployment or need to troubleshoot:
+
+#### 1. Build Docker Image
+
+```bash
+docker build --platform linux/amd64 -t newspulse-ai:latest .
+```
+
+#### 2. Push to Artifact Registry
+
+```bash
+# Create repository
+gcloud artifacts repositories create newspulse-repo \
+    --repository-format=docker \
+    --location=us-central1
+
+# Tag and push
+docker tag newspulse-ai:latest \
+    us-central1-docker.pkg.dev/$PROJECT_ID/newspulse-repo/newspulse-ai:latest
+
+docker push us-central1-docker.pkg.dev/$PROJECT_ID/newspulse-repo/newspulse-ai:latest
+```
+
+#### 3. Create Secrets
+
+```bash
+# Store API keys in Secret Manager
+echo -n "YOUR_API_KEY" | gcloud secrets create google-api-key --data-file=-
+echo -n "YOUR_SEARCH_KEY" | gcloud secrets create google-search-api-key --data-file=-
+echo -n "YOUR_SEARCH_ID" | gcloud secrets create google-search-engine-id --data-file=-
+echo -n "YOUR_EMAIL" | gcloud secrets create smtp-username --data-file=-
+echo -n "YOUR_APP_PASSWORD" | gcloud secrets create smtp-password --data-file=-
+```
+
+#### 4. Deploy Cloud Run Job
+
+```bash
+gcloud run jobs create newspulse-job \
+    --image=us-central1-docker.pkg.dev/$PROJECT_ID/newspulse-repo/newspulse-ai:latest \
+    --region=us-central1 \
+    --set-env-vars=SMTP_SERVER=smtp.gmail.com,SMTP_PORT=587 \
+    --set-secrets=GOOGLE_API_KEY=google-api-key:latest,GOOGLE_SEARCH_API_KEY=google-search-api-key:latest,GOOGLE_SEARCH_ENGINE_ID=google-search-engine-id:latest,SMTP_USERNAME=smtp-username:latest,SMTP_PASSWORD=smtp-password:latest \
+    --max-retries=0 \
+    --task-timeout=20m \
+    --memory=2Gi \
+    --cpu=2 \
+    --args="python","main.py","generate","your_user_id"
+```
+
+#### 5. Set Up Cloud Scheduler (Daily at 8 AM)
+
+```bash
+gcloud scheduler jobs create http newspulse-daily \
+    --location=us-central1 \
+    --schedule="0 8 * * *" \
+    --uri="https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/$PROJECT_ID/jobs/newspulse-job:run" \
+    --http-method=POST \
+    --oauth-service-account-email=$PROJECT_ID@appspot.gserviceaccount.com
+```
+
+---
+
 ## 📚 Documentation
 
 | Document | Description |
 |----------|-------------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System architecture and flow diagrams |
-| [EMAIL_SETUP_GUIDE.md](EMAIL_SETUP_GUIDE.md) | Email service setup and multi-recipient support |
-| [GCP_DEPLOYMENT_GUIDE.md](GCP_DEPLOYMENT_GUIDE.md) | Deploy to Google Cloud Platform |
-| [SETUP_COMPLETE.md](SETUP_COMPLETE.md) | Initial setup completion guide |
+| [EMAIL_SETUP_GUIDE.md](EMAIL_SETUP_GUIDE.md) | Email configuration and multi-recipient support |
+| [GCP_INSTALLATION_GUIDE.md](GCP_INSTALLATION_GUIDE.md) | Install Google Cloud SDK |
 
 ---
 
@@ -217,10 +277,10 @@ python main.py generate your_user_id
 
 ```bash
 # Generate test report (no email)
-python main.py generate nishantgaurav23 --no-deliver
+python main.py generate your_user_id --no-deliver
 
 # Generate and deliver via email
-python main.py generate nishantgaurav23
+python main.py generate your_user_id
 
 # List all profiles
 python main.py list
@@ -235,11 +295,8 @@ python main.py feedback <report_id> <user_id> <rating>
 # Create new profile (interactive)
 python create_profile_interactive.py
 
-# Create from template
-python create_my_profile.py
-
 # View profile
-cat data/user_profiles/nishantgaurav23.json
+cat data/user_profiles/your_user_id.json
 ```
 
 ### Multi-Email Support
@@ -248,83 +305,23 @@ Edit your profile to add CC and BCC recipients:
 
 ```json
 {
-  "user_id": "nishantgaurav23",
-  "delivery_email": "primary.user@gmail.com",
+  "user_id": "your_user_id",
+  "delivery_email": "primary@example.com",
   "cc_emails": [
-    "manager@company.com",
-    "team-lead@company.com"
+    "manager@example.com",
+    "team@example.com"
   ],
   "bcc_emails": [
-    "archive@company.com"
+    "archive@example.com"
   ]
 }
 ```
 
 ---
 
-## 🏗️ Architecture
-
-### System Components
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    NEWSPULSE AI                         │
-└─────────────────────────────────────────────────────────┘
-                          │
-         ┌────────────────┼────────────────┐
-         │                │                │
-    ┌────▼────┐     ┌────▼────┐     ┌────▼────┐
-    │ Agents  │     │  Core   │     │  Tools  │
-    │ (8×AI)  │     │ Engine  │     │ (I/O)   │
-    └────┬────┘     └────┬────┘     └────┬────┘
-         │               │                │
-         └───────────────┼────────────────┘
-                         │
-            ┌────────────▼────────────┐
-            │                         │
-       ┌────▼────┐            ┌──────▼──────┐
-       │ Models  │            │   Config    │
-       │(Schemas)│            │ (Settings)  │
-       └─────────┘            └─────────────┘
-```
-
-For detailed architecture diagrams, see [ARCHITECTURE.md](ARCHITECTURE.md)
-
----
-
-## 🔧 Configuration
-
-### Model Configuration
-
-```python
-# config/settings.py
-gemini_model: str = "models/gemini-2.5-flash"  # Stable, good rate limits
-temperature: float = 0.7                        # Creativity level
-max_tokens: int = 8192                          # Response length
-```
-
-### Verification Settings
-
-```python
-# .env
-VERIFICATION_MAX_RETRIES=2  # Number of retry attempts
-MAX_ARTICLES_PER_REPORT=5   # Articles per report (5-15)
-```
-
-### Email Settings
-
-```env
-SMTP_SERVER=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USERNAME=your-email@gmail.com
-SMTP_PASSWORD=your_16_char_app_password
-```
-
----
-
 ## 🐳 Docker Deployment
 
-### Build and Run Locally
+### Local Docker
 
 ```bash
 # Build image
@@ -335,19 +332,13 @@ docker run -it --rm \
     --env-file .env \
     -v $(pwd)/data:/app/data \
     newspulse-ai:latest \
-    python main.py generate nishantgaurav23
+    python main.py generate your_user_id
 ```
 
-### Deploy to Google Cloud Run
-
-See [GCP_DEPLOYMENT_GUIDE.md](GCP_DEPLOYMENT_GUIDE.md) for complete instructions.
+### Docker Compose
 
 ```bash
-# Quick deploy
-gcloud run deploy newspulse-service \
-    --image gcr.io/your-project/newspulse-ai:latest \
-    --region us-central1 \
-    --set-secrets=GOOGLE_API_KEY=google-api-key:latest
+docker-compose up
 ```
 
 ---
@@ -381,7 +372,7 @@ agentic-newspulse/
 │
 ├── tools/                     # I/O tools
 │   ├── search_tool.py         # Google Custom Search
-│   ├── scraper_tool.py        # Web scraping
+│   ├── fetch_tool.py          # Web scraping
 │   └── email_tool.py          # SMTP delivery
 │
 ├── data/                      # User data
@@ -390,9 +381,10 @@ agentic-newspulse/
 │
 ├── main.py                    # CLI entry point
 ├── create_profile_interactive.py  # Profile creator
+├── deploy_gcp.sh              # GCP deployment script
 ├── Dockerfile                 # Container image
 ├── requirements.txt           # Python dependencies
-└── .env                       # Environment variables
+└── .env                       # Environment variables (local)
 ```
 
 ---
@@ -420,26 +412,16 @@ agentic-newspulse/
 
 ## 🛠️ Advanced Features
 
-### Multi-Email Support
-
-Send reports to multiple recipients:
-
-```json
-{
-  "delivery_email": "primary@example.com",
-  "cc_emails": ["manager@example.com", "team@example.com"],
-  "bcc_emails": ["archive@example.com"]
-}
-```
-
 ### Automated Scheduling
 
-Use cron jobs or Cloud Scheduler:
-
+**Local (cron):**
 ```bash
 # crontab entry (daily at 8 AM)
-0 8 * * * cd /path/to/agentic-newspulse && ./venv/bin/python main.py generate nishantgaurav23
+0 8 * * * cd /path/to/agentic-newspulse && ./venv/bin/python main.py generate your_user_id
 ```
+
+**Google Cloud (Cloud Scheduler):**
+See GCP deployment section above.
 
 ### Custom Topics
 
@@ -450,9 +432,7 @@ Edit your profile to track specific topics:
   "topics_of_interest": [
     "Artificial Intelligence",
     "Machine Learning",
-    "Cloud Computing",
-    "Python",
-    "React"
+    "Cloud Computing"
   ],
   "excluded_topics": [
     "Celebrity News",
@@ -472,9 +452,32 @@ python test_setup.py
 # Generate test report (no email)
 python main.py generate your_user_id --no-deliver
 
-# Check logs
-tail -f logs/newspulse.log
+# Test with Docker
+./test_docker.sh
 ```
+
+---
+
+## 🔒 Security Best Practices
+
+1. **Never commit `.env` to version control**
+   - Already in `.gitignore` - double-check before pushing
+
+2. **Rotate API keys regularly**
+   - Regenerate every 3-6 months
+   - Delete old keys immediately
+
+3. **Use Secret Manager in production**
+   - Store credentials in GCP Secret Manager
+   - Never hardcode secrets in code
+
+4. **Monitor API usage**
+   - Set up billing alerts
+   - Track quota consumption
+
+5. **Private repositories recommended**
+   - Keep your deployment private
+   - Review code before sharing
 
 ---
 
@@ -484,11 +487,9 @@ tail -f logs/newspulse.log
 - [ ] Web UI for profile management
 - [ ] Multiple language support
 - [ ] Slack/Teams integration
-- [ ] RSS feed support
 
 ### Long Term
 - [ ] Audio/podcast summaries
-- [ ] Interactive feedback widgets
 - [ ] Mobile app (iOS/Android)
 - [ ] Real-time alerts for breaking news
 - [ ] Multi-tenant SaaS platform
@@ -519,14 +520,6 @@ This project is licensed under the MIT License.
 - **Google Custom Search** for news discovery
 - **BeautifulSoup** for web scraping
 - **Pydantic** for data validation
-
----
-
-## 📞 Support
-
-- **Documentation**: See docs in this repository
-- **Issues**: File an issue on GitHub
-- **Email**: Check SETUP_COMPLETE.md for contact info
 
 ---
 
