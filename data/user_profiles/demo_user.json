@@ -1,0 +1,23 @@
+{
+  "user_id": "demo_user",
+  "name": "Demo User",
+  "role": "Technology Executive",
+  "company": "Demo Corporation",
+  "industry": "Technology",
+  "topics_of_interest": [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Cloud Computing",
+    "Cybersecurity",
+    "Digital Transformation"
+  ],
+  "excluded_topics": [],
+  "preferred_sources": [],
+  "excluded_sources": [],
+  "delivery_email": "demo@example.com",
+  "delivery_time": "08:00",
+  "timezone": "America/New_York",
+  "constraints": {},
+  "created_at": "2026-01-20 10:33:50.297497",
+  "updated_at": "2026-01-20 10:33:50.297795"
+}

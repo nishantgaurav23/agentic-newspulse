@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  newspulse-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: newspulse-ai:latest
+    container_name: newspulse-ai
+    env_file:
+      - .env
+    volumes:
+      # Mount data directory for persistence
+      - ./data:/app/data
+    command: python main.py list
+    # For interactive testing, override with:
+    # docker-compose run --rm newspulse-ai python main.py generate nishantgaurav23 --no-deliver
+
+# Usage Examples:
+#
+# 1. Build and list profiles:
+#    docker-compose up
+#
+# 2. Generate test report:
+#    docker-compose run --rm newspulse-ai python main.py generate nishantgaurav23 --no-deliver
+#
+# 3. Generate and send email:
+#    docker-compose run --rm newspulse-ai python main.py generate nishantgaurav23
+#
+# 4. Create new profile:
+#    docker-compose run --rm newspulse-ai python create_profile_interactive.py
+#
+# 5. View logs:
+#    docker-compose logs -f

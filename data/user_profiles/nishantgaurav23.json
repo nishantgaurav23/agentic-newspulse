@@ -1,0 +1,39 @@
+{
+  "user_id": "nishantgaurav23",
+  "name": "Nishant Gaurav",
+  "role": "Data Scientist",
+  "company": "Turing Global India Private Limited",
+  "industry": "Technology",
+  "topics_of_interest": [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Software Development",
+    "Cloud Computing",
+    "Python",
+    "React",
+    "DevOps"
+  ],
+  "excluded_topics": [
+    "Celebrity News",
+    "Sports"
+  ],
+  "preferred_sources": [
+    "techcrunch.com",
+    "arstechnica.com",
+    "theverge.com",
+    "hacker news"
+  ],
+  "excluded_sources": [],
+  "delivery_email": "nishantgaurav23@gmail.com",
+  "cc_emails": [
+    "sowmyachowdary2022@gmail.com"
+  ],
+  "bcc_emails": [
+    "nishant.gaurav@gmail.com"
+  ],
+  "delivery_time": "08:00",
+  "timezone": "Asia/Kolkata",
+  "constraints": {},
+  "created_at": "2026-01-20 13:02:53.137606",
+  "updated_at": "2026-01-20 13:02:53.137736"
+}

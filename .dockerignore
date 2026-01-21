@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (build into image if needed)
+*.md
+!README.md
+
+# Examples and test data
+examples/
+tests/
+*.test.py
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+
+# Keep data directories structure but ignore history content
+data/history/*.json
+# Include user profiles in Docker image
+# data/user_profiles/*.json
+!data/user_profiles/.gitkeep
+!data/history/.gitkeep
+
+# Environment files (sensitive data)
+.env
+.env.*
+!.env.example

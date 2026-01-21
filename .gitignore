@@ -1,0 +1,88 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Data directories (don't commit user data by default)
+data/history/*.json
+data/history/*.jsonl
+
+# Keep user profile for deployment (needed for GCP)
+# All profiles will be committed for now
+# Add specific profiles to exclude if needed
+
+# Keep directory structure
+!data/user_profiles/.gitkeep
+!data/history/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# MyPy
+.mypy_cache/
+
+# GCP Credentials and Secrets (CRITICAL - NEVER COMMIT)
+*-key.json
+*-credentials.json
+service-account-*.json
+gcp-key.json
+gcp-service-account.json
+*.pem
+*.key
+
+# Secrets directory
+secrets/
+
+# Deployment outputs
+deployment-output.txt
+deploy-*.log
+
+# Session files (conversation history)
+*.jsonl

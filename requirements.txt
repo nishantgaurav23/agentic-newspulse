@@ -1,0 +1,30 @@
+# Google Generative AI SDK
+google-genai>=1.0.0
+
+# Core dependencies
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# Web scraping and HTTP
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+lxml>=4.9.0
+html5lib>=1.1
+
+# Search API (Google Custom Search)
+google-api-python-client>=2.100.0
+
+# Data handling
+pydantic-settings>=2.0.0
+typing-extensions>=4.8.0
+
+# Logging and monitoring
+colorlog>=6.8.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Utilities
+python-dateutil>=2.8.2
+pytz>=2023.3

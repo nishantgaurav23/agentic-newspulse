@@ -1,0 +1,31 @@
+{
+  "user_id": "demo_ceo",
+  "name": "Jane Doe",
+  "role": "CEO",
+  "company": "TechCorp Inc.",
+  "industry": "Technology",
+  "topics_of_interest": [
+    "Artificial Intelligence",
+    "Cloud Computing",
+    "Cybersecurity",
+    "Digital Transformation",
+    "Enterprise Software"
+  ],
+  "excluded_topics": [
+    "Celebrity News",
+    "Sports"
+  ],
+  "preferred_sources": [
+    "techcrunch.com",
+    "bloomberg.com",
+    "reuters.com",
+    "wsj.com"
+  ],
+  "excluded_sources": [],
+  "delivery_email": "jane.doe@techcorp.com",
+  "delivery_time": "08:00",
+  "timezone": "America/New_York",
+  "constraints": {},
+  "created_at": "2025-01-20T10:00:00",
+  "updated_at": "2025-01-20T10:00:00"
+}
